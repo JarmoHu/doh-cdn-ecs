@@ -1,7 +1,7 @@
-# 第一阶段：编译环境
-FROM golang:1.21-alpine AS builder
+# 第一阶段：编译环境 (已将基础镜像升级为最新的 Go 版本以兼容依赖库)
+FROM golang:alpine AS builder
 
-# 【核心修复】：安装 git，这是拉取 GitHub 第三方包必需的
+# 安装 git，这是拉取 GitHub 第三方包必需的
 RUN apk add --no-cache git
 
 WORKDIR /app
@@ -9,7 +9,7 @@ WORKDIR /app
 # 复制 main.go 进容器
 COPY main.go .
 
-# 【优化】：配置 Go 代理，防止网络问题导致拉取失败
+# 配置 Go 代理，防止网络问题导致拉取失败
 ENV GOPROXY=https://goproxy.cn,direct
 
 # 初始化模块并下载依赖
